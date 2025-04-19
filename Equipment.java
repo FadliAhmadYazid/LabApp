@@ -1,60 +1,72 @@
 /**
- * Kelas Equipment - Kelas pendukung
- * Kelas ini merepresentasikan peralatan laboratorium yang dapat dipinjam.
- * Digunakan oleh EquipmentManager sebagai data dasar peralatan.
+ * Equipment - Class model untuk peralatan lab
+ * Class ini merepresentasikan data peralatan lab dalam sistem
  */
 public class Equipment {
-    private String id;           // ID unik peralatan
-    private String name;         // Nama peralatan
-    private double rentalPrice;  // Harga sewa per hari
-    private boolean available;   // Status ketersediaan
+    private int id;
+    private String name;
+    private String description;
+    private double rentPrice; // Harga sewa per hari
+    private boolean isAvailable;
     
-    // Constructor untuk membuat objek Equipment baru
-    public Equipment(String id, String name, double rentalPrice) {
-        this.id = id;
-        this.name = name;
-        this.rentalPrice = rentalPrice;
-        this.available = true;  // Peralatan baru selalu tersedia
+    public Equipment() {
     }
     
-    // Getter untuk ID
-    public String getId() {
+    public Equipment(int id, String name, String description, double rentPrice, boolean isAvailable) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.rentPrice = rentPrice;
+        this.isAvailable = isAvailable;
+    }
+    
+    // Getter dan Setter
+    public int getId() {
         return id;
     }
     
-    // Getter untuk nama
+    public void setId(int id) {
+        this.id = id;
+    }
+    
     public String getName() {
         return name;
     }
     
-    // Setter untuk nama
     public void setName(String name) {
         this.name = name;
     }
     
-    // Getter untuk harga sewa
-    public double getRentalPrice() {
-        return rentalPrice;
+    public String getDescription() {
+        return description;
     }
     
-    // Setter untuk harga sewa
-    public void setRentalPrice(double rentalPrice) {
-        this.rentalPrice = rentalPrice;
+    public void setDescription(String description) {
+        this.description = description;
     }
     
-    // Getter untuk status ketersediaan
+    public double getRentPrice() {
+        return rentPrice;
+    }
+    
+    public void setRentPrice(double rentPrice) {
+        this.rentPrice = rentPrice;
+    }
+    
     public boolean isAvailable() {
-        return available;
+        return isAvailable;
     }
     
-    // Setter untuk status ketersediaan
     public void setAvailable(boolean available) {
-        this.available = available;
+        isAvailable = available;
     }
     
-    // Override toString untuk menampilkan informasi peralatan
     @Override
     public String toString() {
-        return "ID: " + id + " | Name: " + name + " | Price per day: $" + rentalPrice;
+        return "ID: " + id +
+               ", Nama: " + name +
+               ", Deskripsi: " + description +
+               ", Harga Sewa: Rp" + rentPrice + "/hari" +
+               ", Status: " + (isAvailable ? "Tersedia" : "Tidak Tersedia");
     }
 }

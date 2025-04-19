@@ -1,87 +1,114 @@
-import java.time.LocalDate;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
- * Kelas Order - Kelas pendukung
- * Kelas ini merepresentasikan pesanan peminjaman peralatan laboratorium.
- * Digunakan oleh OrderManager untuk menyimpan informasi pesanan.
+ * Order - Class model untuk pesanan peminjaman peralatan
+ * Class ini merepresentasikan data pesanan dalam sistem
  */
 public class Order {
-    private String orderId;          // ID unik pesanan
-    private String userId;           // ID pengguna yang memesan
-    private String equipmentId;      // ID peralatan yang dipesan
-    private int rentalDays;          // Jumlah hari peminjaman
-    private double totalPrice;       // Total harga peminjaman
-    private LocalDate orderDate;     // Tanggal pesanan dibuat
-    private LocalDate paymentDueDate; // Tanggal batas pembayaran
-    private boolean isPaid;          // Status pembayaran
-    private boolean isCompleted;     // Status penyelesaian pesanan
+    private int id;
+    private int userId;
+    private int equipmentId;
+    private Date orderDate;
+    private int durationDays;
+    private Date returnDate;
+    private String status; // PENDING, PAID, RETURNED
+    private double totalAmount;
     
-    // Constructor
-    public Order(String orderId, String userId, String equipmentId, int rentalDays, double totalPrice) {
-        this.orderId = orderId;
+    public Order() {
+    }
+    
+    public Order(int id, int userId, int equipmentId, Date orderDate, int durationDays, String status) {
+        this.id = id;
         this.userId = userId;
         this.equipmentId = equipmentId;
-        this.rentalDays = rentalDays;
-        this.totalPrice = totalPrice;
-        this.orderDate = LocalDate.now();
-        this.paymentDueDate = orderDate.plusDays(7); // 7 hari batas pembayaran
-        this.isPaid = false;
-        this.isCompleted = false;
+        this.orderDate = orderDate;
+        this.durationDays = durationDays;
+        this.status = status;
+        
+        // Menghitung tanggal pengembalian berdasarkan durasi
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+        cal.setTime(orderDate);
+        cal.add(java.util.Calendar.DAY_OF_MONTH, durationDays);
+        this.returnDate = cal.getTime();
     }
     
-    // Getter untuk orderId
-    public String getOrderId() {
-        return orderId;
+    // Getter dan Setter
+    public int getId() {
+        return id;
     }
     
-    // Getter untuk userId
-    public String getUserId() {
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public int getUserId() {
         return userId;
     }
     
-    // Getter untuk equipmentId
-    public String getEquipmentId() {
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+    
+    public int getEquipmentId() {
         return equipmentId;
     }
     
-    // Getter untuk totalPrice
-    public double getTotalPrice() {
-        return totalPrice;
+    public void setEquipmentId(int equipmentId) {
+        this.equipmentId = equipmentId;
     }
     
-    // Getter untuk paymentDueDate
-    public LocalDate getPaymentDueDate() {
-        return paymentDueDate;
+    public Date getOrderDate() {
+        return orderDate;
     }
     
-    // Getter untuk status pembayaran
-    public boolean isPaid() {
-        return isPaid;
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
     }
     
-    // Setter untuk status pembayaran
-    public void setPaid(boolean paid) {
-        isPaid = paid;
+    public int getDurationDays() {
+        return durationDays;
     }
     
-    // Getter untuk status penyelesaian
-    public boolean isCompleted() {
-        return isCompleted;
+    public void setDurationDays(int durationDays) {
+        this.durationDays = durationDays;
+        
+        // Update tanggal pengembalian
+        java.util.Calendar cal = java.util.Calendar.getInstance();
+        cal.setTime(orderDate);
+        cal.add(java.util.Calendar.DAY_OF_MONTH, durationDays);
+        this.returnDate = cal.getTime();
     }
     
-    // Setter untuk status penyelesaian
-    public void setCompleted(boolean completed) {
-        isCompleted = completed;
+    public Date getReturnDate() {
+        return returnDate;
     }
     
-    // Override toString untuk menampilkan informasi pesanan
+    public String getStatus() {
+        return status;
+    }
+    
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    
+    public double getTotalAmount() {
+        return totalAmount;
+    }
+    
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+    
     @Override
     public String toString() {
-        return "Order ID: " + orderId + 
-               " | Equipment: " + equipmentId + 
-               " | Days: " + rentalDays + 
-               " | Total: $" + totalPrice +
-               " | Due date: " + paymentDueDate +
-               " | Status: " + (isPaid ? "Paid" : "Unpaid");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        return "ID Pesanan: " + id +
+               ", ID Peralatan: " + equipmentId +
+               ", Tanggal Pesan: " + dateFormat.format(orderDate) +
+               ", Durasi: " + durationDays + " hari" +
+               ", Tanggal Kembali: " + dateFormat.format(returnDate) +
+               ", Status: " + status +
+               ", Total: Rp" + totalAmount;
     }
 }

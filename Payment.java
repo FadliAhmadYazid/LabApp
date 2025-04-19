@@ -1,73 +1,87 @@
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
- * Kelas Payment - Kelas pendukung
- * Kelas ini merepresentasikan pembayaran untuk pesanan.
- * Digunakan oleh PaymentProcessor untuk menyimpan informasi pembayaran.
+ * Payment - Class model untuk pembayaran
+ * Class ini merepresentasikan data pembayaran dalam sistem
  */
 public class Payment {
-    private String orderId;              // ID pesanan yang dibayar
-    private double amount;               // Jumlah pembayaran
-    private LocalDate paymentDate;       // Tanggal pembayaran
-    private List<AdditionalCharge> additionalCharges; // Daftar biaya tambahan
+    private int id;
+    private int orderId;
+    private double amount;
+    private Date paymentDate;
+    private String paymentMethod;
+    private String status; // PENDING, COMPLETED
     
-    // Constructor
-    public Payment(String orderId, double amount) {
-        this.orderId = orderId;
-        this.amount = amount;
-        this.paymentDate = LocalDate.now();
-        this.additionalCharges = new ArrayList<>();
+    public Payment() {
     }
     
-    // Getter untuk orderId
-    public String getOrderId() {
+    public Payment(int id, int orderId, double amount, Date paymentDate, String paymentMethod, String status) {
+        this.id = id;
+        this.orderId = orderId;
+        this.amount = amount;
+        this.paymentDate = paymentDate;
+        this.paymentMethod = paymentMethod;
+        this.status = status;
+    }
+    
+    // Getter dan Setter
+    public int getId() {
+        return id;
+    }
+    
+    public void setId(int id) {
+        this.id = id;
+    }
+    
+    public int getOrderId() {
         return orderId;
     }
     
-    // Getter untuk amount
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
+    
     public double getAmount() {
         return amount;
     }
     
-    // Getter untuk paymentDate
-    public LocalDate getPaymentDate() {
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+    
+    public Date getPaymentDate() {
         return paymentDate;
     }
     
-    // Menambahkan biaya tambahan
-    public void addCharge(double amount, String reason) {
-        additionalCharges.add(new AdditionalCharge(amount, reason));
+    public void setPaymentDate(Date paymentDate) {
+        this.paymentDate = paymentDate;
     }
     
-    // Menghitung total semua biaya (biaya dasar + biaya tambahan)
-    public double getTotalCharges() {
-        double total = amount;
-        for (AdditionalCharge charge : additionalCharges) {
-            total += charge.getAmount();
-        }
-        return total;
+    public String getPaymentMethod() {
+        return paymentMethod;
     }
     
-    // Inner class untuk merepresentasikan biaya tambahan
-    private class AdditionalCharge {
-        private double amount;       // Jumlah biaya tambahan
-        private String reason;       // Alasan biaya tambahan
-        private LocalDate chargeDate; // Tanggal biaya tambahan
-        
-        public AdditionalCharge(double amount, String reason) {
-            this.amount = amount;
-            this.reason = reason;
-            this.chargeDate = LocalDate.now();
-        }
-        
-        public double getAmount() {
-            return amount;
-        }
-        
-        public String getReason() {
-            return reason;
-        }
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+    
+    public String getStatus() {
+        return status;
+    }
+    
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    
+    @Override
+    public String toString() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        return "ID Pembayaran: " + id +
+               ", ID Pesanan: " + orderId +
+               ", Jumlah: Rp" + amount +
+               ", Tanggal: " + dateFormat.format(paymentDate) +
+               ", Metode: " + paymentMethod +
+               ", Status: " + status;
     }
 }
